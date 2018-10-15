@@ -1,6 +1,8 @@
 const width = 300;
 const height = 300;
-const max_it = 1000;
+const max_it = 100;
+const num = 1;
+const c = [-0.4, 0.6]
 
 const x_ = [-1.5, 1]
 const y_ = [-1, 1]
@@ -74,26 +76,22 @@ function doubleClicked() {
 
 function draw(){
     background(0);
-    var h;
-    var num = 5;
     if ( zoom ) {
         for (let i=0; i<width; i++) {
             for (let j=0; j<width; j++) {
                 var x = map(i, 0, width, x_[0], x_[1]);
                 var y = map(j, 0, height, y_[1], y_[0]);
-                var c = [x, y];
-                var z = [0, 0];
+                var z = [x, y];
                 let it=0
                 for (; it<max_it; it++) {
                     z = f(z, c, num);
-                    if (conjugateSq(z)>1) {
+                    if (conjugateSq(z)>=2) {
                         break;
                     }
                 }
                 let col = color(0);
                 if ( it < max_it ){
-                    col = color((1 - it/max_it)*255, 100, 255)
-                    img.set(i, j, color(it/max_it*255, 200, 255));
+                    col = color(((0.5 - it/max_it)*255)%256, 200, 255)
                 }
                 img.set(i, j, col);
             }

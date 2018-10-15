@@ -1,6 +1,7 @@
-const width = 600;
-const height = 600;
-const max_it = 1000;
+const width = 300;
+const height = 300;
+const max_it = 50;
+const num = 1;
 
 const x_ = [-1.5, 1]
 const y_ = [-1, 1]
@@ -17,9 +18,19 @@ function setup(){
     colorMode(HSB, 255);
 }
 
-function f(z, c) {
-    let r = z[0]*z[0] - z[1]*z[1] + c[0];
-    let i = 2*z[0]*z[1] + c[1];
+function f(z, c, n) {
+    let r = z.slice();
+    for (let j=0; j<n; j++) {
+        r = complexTimes(r, z)
+    }
+    r[0] += c[0];
+    r[1] += c[1];
+    return r
+}
+
+function complexTimes(c, d) {
+    let r = c[0]*d[0] - c[1]*d[1];
+    let i = c[0]*d[1] + c[1]*d[0];
     return [r, i]
 }
 
@@ -64,7 +75,6 @@ function doubleClicked() {
 
 function draw(){
     background(0);
-    var h;
     if ( zoom ) {
         for (let i=0; i<width; i++) {
             for (let j=0; j<width; j++) {
@@ -74,15 +84,14 @@ function draw(){
                 var z = [0, 0];
                 let it=0
                 for (; it<max_it; it++) {
-                    z = f(z, c);
-                    if (conjugateSq(z)>1) {
+                    z = f(z, c, num);
+                    if (conjugateSq(z)>=2) {
                         break;
                     }
                 }
                 let col = color(0);
                 if ( it < max_it ){
-                    col = color((1 - it/max_it)*255, 100, 255)
-                    img.set(i, j, color(it/max_it*255, 200, 255));
+                    col = color(((0.6 -  it/max_it)*255)%256, 200, 255)
                 }
                 img.set(i, j, col);
             }
