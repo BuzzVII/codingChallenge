@@ -64,7 +64,7 @@ function draw(){
                 a.x = 0;
                 a.y = 0;
                 pos.sub(com).mult(-1);
-                if ( v.angleBetween(pos) > 0.1 | v.mag() < v_max ) {
+                if ( v.angleBetween(pos) > 0.1 || v.mag() < v_max ) {
                     a = pos;
                     a.setMag(0.1);
                     let temp = createVector(v.x, v.y);
@@ -73,7 +73,7 @@ function draw(){
                 }
             }
             for (let j=0; j < circles.length; j++) {
-                if ( i!=j & circles[i].collision(circles[j])) {
+                if ( i!=j && circles[i].collision(circles[j])) {
                         pos1 = circles[i].getPos();
                         pos2 = circles[j].getPos();
                         d = pos1.sub(pos2);

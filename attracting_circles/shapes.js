@@ -1,26 +1,26 @@
 function move(obj) {
-        if (obj.state_space) {
-            obj.x += obj.state_space.vx;
-            obj.y += obj.state_space.vy;
-            obj.state_space.vx += obj.state_space.ax; 
-            obj.state_space.vy += obj.state_space.ay;
+        if (obj.state) {
+            obj.x += obj.state.vx;
+            obj.y += obj.state.vy;
+            obj.state.vx += obj.state.ax; 
+            obj.state.vy += obj.state.ay;
         }
 }
 
 class Rect {
-    constructor(x, y, w, h, state_space, draw_style){
+    constructor(x, y, w, h, state, style){
             this.x = x;
             this.y = y;
             this.w = w;
             this.h = h;
-            this.state_space = state_space;
-            if (draw_style.c_line){
-                    this.c_line = draw_style.c_line;
+            this.state = state;
+            if (style.c_line){
+                    this.c_line = style.c_line;
             } else {
                     this.c_line = false;
             }
-            if (draw_style.c_fill) {
-                    this.c_fill = draw_style.c_fill;
+            if (style.c_fill) {
+                    this.c_fill = style.c_fill;
             } else {
                     this.c_fill = false;
             }
@@ -38,7 +38,34 @@ class Rect {
             rect(this.x, this.y, this.w, this.h)
     }
 
+    getPos(){
+        return createVector(this.x, this.y);
+    }
+
+    getVel(v){
+        let vx = this.state.vx;
+        let vy = this.state.vy;
+        return createVector(vx, vy);
+    }
+
+    getAcc(a){
+        let ax = this.state.ax;
+        let ay = this.state.ay;
+        return createVector(ax, ay);
+    }
+
+    setVel(v){
+        this.state.vx = v.x;
+        this.state.vy = v.y;
+    }
+
+    setAcc(a){
+        this.state.ax = a.x;
+        this.state.ay = a.y;
+    }
+
     circleCollision(other){
+            let hit = false;
             let d1 = dist(other.x, other.y, this.x, this.y);
             let d2 = dist(other.x, other.y, this.x + this.w, this.y);
             let d3 = dist(other.x, other.y, this.x, this.y + this.h);
@@ -51,29 +78,35 @@ class Rect {
             let max_y = (this.h < 0 ? this.y:this.y + this.h)
             let e3 = (other.y + other.r) >= min_y;
             let e4 = (other.y - other.r) <= max_y;
-            let inside = e1 & e2 & e3 & e4;
-            return inside | (d1 <= other.r) | (d2 <= other.r) | (d3 <= other.r) | (d4 <= other.r);
+            let inside = e1 && e2 && e3 && e4;
+            let corner = (d1 <= other.r) || (d2 <= other.r) || (d3 <= other.r) || (d4 <= other.r);
+            if (corner||inside){
+                hit = {l:(other.x + other.r) <= min_x,
+                       r:(other.x - other.r) >= max_x, 
+                       u:(other.y + other.r) <= min_y, 
+                       d:(other.y - other.r) >= max_y, 
+                       c:corner};
+            }
+            return hit;
     }
-
-
 }
 
 
 class Circle{
     
-    constructor(x, y, r, state_space, draw_style){
+    constructor(x, y, r, state, style){
             this.x = x;
             this.y = y;
             this.r = r;
-            this.state_space = state_space;
+            this.state = state;
             //TODO: fix so that black can be used
-            if (draw_style.c_line){
-                    this.c_line = draw_style.c_line;
+            if (style.c_line){
+                    this.c_line = style.c_line;
             } else {
                     this.c_line = false;
             }
-            if (draw_style.c_fill) {
-                    this.c_fill = draw_style.c_fill;
+            if (style.c_fill) {
+                    this.c_fill = style.c_fill;
             } else {
                     this.c_fill = false;
             }
@@ -84,25 +117,25 @@ class Circle{
     }
 
     getVel(v){
-        let vx = this.state_space.vx;
-        let vy = this.state_space.vy;
+        let vx = this.state.vx;
+        let vy = this.state.vy;
         return createVector(vx, vy);
     }
 
     getAcc(a){
-        let ax = this.state_space.ax;
-        let ay = this.state_space.ay;
+        let ax = this.state.ax;
+        let ay = this.state.ay;
         return createVector(ax, ay);
     }
 
     setVel(v){
-        this.state_space.vx = v.x;
-        this.state_space.vy = v.y;
+        this.state.vx = v.x;
+        this.state.vy = v.y;
     }
 
     setAcc(a){
-        this.state_space.ax = a.x;
-        this.state_space.ay = a.y;
+        this.state.ax = a.x;
+        this.state.ay = a.y;
     }
 
     collision(other){

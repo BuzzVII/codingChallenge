@@ -78,9 +78,9 @@ class Rect {
             let max_y = (this.h < 0 ? this.y:this.y + this.h)
             let e3 = (other.y + other.r) >= min_y;
             let e4 = (other.y - other.r) <= max_y;
-            let inside = e1 & e2 & e3 & e4;
-            let corner = (d1 <= other.r) | (d2 <= other.r) | (d3 <= other.r) | (d4 <= other.r);
-            if (corner|inside){
+            let inside = e1 && e2 && e3 && e4;
+            let corner = (d1 <= other.r) || (d2 <= other.r) || (d3 <= other.r) || (d4 <= other.r);
+            if (corner||inside){
                 hit = {l:(other.x + other.r) <= min_x,
                        r:(other.x - other.r) >= max_x, 
                        u:(other.y + other.r) <= min_y, 

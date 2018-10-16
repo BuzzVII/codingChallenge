@@ -34,14 +34,14 @@ function step(s) {
     } else if (direction === 'D') {
         h[1] -= 1;
     }
-    if ( h[0] == -1 | h[0] == blocks | h[1] == -1 | h[1] == blocks ) {
+    if ( h[0] == -1 || h[0] == blocks || h[1] == -1 || h[1] == blocks ) {
         game_over = true;
     } else {
         s.push(h);
     }
     for (let i=0; i < s.length; i++) {
         for (let j=0; j < s.length; j++) {
-            if (i != j & s[i][0] == s[j][0] & s[i][1] == s[j][1]) {
+            if (i != j && s[i][0] == s[j][0] && s[i][1] == s[j][1]) {
                 game_over = true;
             }
         }
@@ -66,7 +66,7 @@ function showFruit() {
 
 function eatFruit() {
     e = snake.length - 1;
-    if (snake[e][0] == fruit[0] & snake[e][1] == fruit[1]) {
+    if (snake[e][0] == fruit[0] && snake[e][1] == fruit[1]) {
         growing = true;
         fruit = [floor(random(0, blocks)), floor(random(0, blocks))]
         score += 10

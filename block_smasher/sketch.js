@@ -32,7 +32,7 @@ function setup(){
 }
 
 function checkEdge() {
-    if (ball.x < 0 | ball.x > width) {
+    if (ball.x < 0 || ball.x > width) {
         let v = ball.getVel();
         v.x = -v.x;
         ball.setVel(v);
@@ -42,7 +42,7 @@ function checkEdge() {
         v.y = -v.y;
         ball.setVel(v);
     }
-    if (paddle.x < 0 | paddle.x > width - w) {
+    if (paddle.x < 0 || paddle.x > width - w) {
         paddle.setVel(createVector(0,0));
     }
     
@@ -51,12 +51,12 @@ function checkEdge() {
 function checkPaddle() {
     let hit = paddle.circleCollision(ball);
     if (hit) {
-        if ( hit.u | hit.d ) {
+        if ( hit.u || hit.d ) {
             let v = ball.getVel();
             v.y = -v.y;
             ball.setVel(v);
         }
-        if ( hit.l | hit.r ) {
+        if ( hit.l || hit.r ) {
             let v = ball.getVel();
             v.x = -v.x;
             ball.setVel(v);
@@ -70,12 +70,12 @@ function checkHit() {
             let hit = tiles[i].circleCollision(ball);
             if (hit) {
                 tiles[i].state.show = false;
-                if ( hit.u | hit.d ) {
+                if ( hit.u || hit.d ) {
                     let v = ball.getVel();
                     v.y = -v.y;
                     ball.setVel(v);
                 }
-                if ( hit.l | hit.r ) {
+                if ( hit.l || hit.r ) {
                     let v = ball.getVel();
                     v.x = -v.x;
                     ball.setVel(v);

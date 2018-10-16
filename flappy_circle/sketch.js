@@ -84,7 +84,7 @@ function game_step(){
 }
 
 function draw_objects(){
-    if ( main_circle.y < (0 + main_circle.r) | main_circle.y > (height - main_circle.r)) {
+    if ( main_circle.y < (0 + main_circle.r) || main_circle.y > (height - main_circle.r)) {
             game_over();
     }
     for (let i=0; i < obstacles.length; i++) {
@@ -111,7 +111,7 @@ function draw(){
     
     draw_objects();
     main_circle.show();
-    if ( playing & started ) {
+    if ( playing && started ) {
         show_score();
         game_step();
     } else if ( started ) {
