@@ -6,7 +6,6 @@ var mine_field = new Array((w+2)*(h+2));
 var cleared = new Array((w+2)*(h+2));
 var flag = new Array((w+2)*(h+2));
 var mine_count = new Array((w+2)*(h+2));
-var win = false;
 var lose = false;
 var endText = 'Cleared';
 
@@ -30,7 +29,6 @@ function setup() {
         }
     }
 }
-
 
 function mouseClicked() {
     if (mouseX >= 0 & mouseX < width & mouseY >= 0 & mouseY < height) {
@@ -63,8 +61,9 @@ function mouseClicked() {
 
 function gameOver(good) {
         endText = good?'Cleared':'KABOOOM!!';
+        endColour = good?'blue':'red';
         noStroke();
-        fill('blue');
+        fill(endColour);
         textAlign(CENTER);
         textSize(64);
         text(endText, width/2, height/2);
@@ -73,16 +72,15 @@ function gameOver(good) {
 function draw() {
     background(150);
     stroke(0);
-    win = true;
+    fill(100);
+    var win = true;
     for (let i=0; i<w; i++) {
         for (let j=0; j<h; j++) {
             let k = (i+1)+(j+1)*(w+2);
+            push();
             if (flag[k]) {
                 fill('green');
-            } else {
-                fill(100);
             }
-            push();
             if ( cleared[k]==1 ) {
                 fill(200);
                 if (mine_field[k]) {
@@ -92,14 +90,16 @@ function draw() {
             rect(i*width/w, j*height/h, width/w, height/h);
             if (!mine_field[k]) {
                 win &= cleared[k];
-                if (cleared[k]) {
+                if (cleared[k] && mine_count[k]>0 && !(mine_field[k])) {
+                    let hue = map(mine_count[k], 1, 8, 0.5, 1);
                     push()
+                    colorMode(HSB, 1);
                     noStroke();
-                    fill(0);
+                    fill(hue, 1, 1);
                     textSize(20);
                     textAlign(CENTER, CENTER);
                     text(mine_count[k], (i+0.5)*width/w, (j+0.5)*height/h);
-                    pop(); 
+                    pop();
                 }
             }
             pop();
@@ -110,12 +110,10 @@ function draw() {
             for (let j=0; j<h; j++) {
                 let k = (i+1)+(j+1)*(w+2);
                 if (mine_field[k]) {
-                    push()
                     noStroke();
                     fill(0);
                     ellipseMode(RADIUS);
                     ellipse((i+0.5)*width/w, (j+0.5)*height/h, 20);
-                    pop(); 
                 }
             }
         }
