@@ -1,1 +1,19 @@
-theme: jekyll-theme-slate
+title: Coding
+description: A collection of code challenges
+github_username: BuzzVII
+name: Kristian Weegink
+challenges:
+  - attracting_circles
+  - block_smasher
+  - cannon_fodder
+  - clock
+  - flappy_circle
+  - grid_collision
+  - growing_circles
+  - julia
+  - mandlebrot
+  - mines
+  - pi_vis
+  - snake
+  - travelling_salesman
+  - tree_search
